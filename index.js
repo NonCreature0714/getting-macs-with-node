@@ -1,19 +1,29 @@
-const path = require('path');
 const fs = require('fs');
 var ifs = {
-	eth0: '',
-	wlan0: ''
+	eth0: String,
+	wlan0: String
 };
-/*
-fs.open('/sys/class/net/eth0/addess', 'r', (err, fd) => {
-	if(err){
-		if(err.code === 'ENOENT') {
-			console.error('no address there');
-			return;
-		} else {
-			throw err;
-		}
+
+fs.readFile('/sys/class/net/eth0/address', 'utf8', (err, data) => {
+	if(err) {
+		return console.log(err);
 	}
-	console.log('Contents of the file are: ' + fd);
+	ifs.eth0 = data;
+	process.emit('eth0complete');
 });
-*/
+
+fs.readFile('/sys/class/net/wlan0/address', 'utf8', (err, data) => {
+	if(err) {
+		return console.log(err);
+	}
+	ifs.wlan0 = data;
+	process.emit('wlan0complete');
+});
+//console.log('eth0: ' + ifs.eth0 + ' ; wlan0: ' + ifs.wlan0); 
+
+process.on('eth0complete', () => {
+	console.log('eth0: ' + ifs.eth0);
+});
+process.on('wlan0complete', () => {
+	console.log('wlan0: ' + ifs.wlan0);
+});
