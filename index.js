@@ -22,8 +22,11 @@ fs.readFile('/sys/class/net/wlan0/address', 'utf8', (err, data) => {
 //console.log('eth0: ' + ifs.eth0 + ' ; wlan0: ' + ifs.wlan0); 
 
 process.on('eth0complete', () => {
-	console.log('eth0: ' + ifs.eth0);
+	//console.log('eth0: ' + ifs.eth0);
+	process.on('wlan0complete', () => {
+		console.log('Eth0: ' + ifs.eth0 + ' ... wlan0: ' + ifs.wlan0);
+	});
 });
-process.on('wlan0complete', () => {
-	console.log('wlan0: ' + ifs.wlan0);
-});
+//process.on('wlan0complete', () => {
+//	console.log('wlan0: ' + ifs.wlan0);
+//});
